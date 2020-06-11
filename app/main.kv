@@ -1,0 +1,606 @@
+#: import rgba kivy.utils.rgba
+#: import icon kivy.garden.iconfonts.icon
+#: import mtx kivy.metrics
+#: import DatePicker datepicker.datepicker.DatePicker
+#: import NavigationDrawer kivy.garden.navigationdrawer.NavigationDrawer
+ 
+<MainWindow>:
+	orientation: 'vertical'
+	canvas.before:
+		Color:
+			rgba:[1,1,1,1]
+		Rectangle:
+			pos: self.pos
+			size: self.size
+	ScreenManager:
+		id: scrn_mngr
+		Screen:
+			name: 'scrn_signin'	
+			BoxLayout:
+				orientation: 'vertical'
+				canvas.before:
+					Color: 
+						rgba: rgba('#0e1574ff')
+					Triangle:
+						points: [0, self.size[1],self.size[0],self.size[1],0,self.size[1]-(0.4*self.size[1])]
+					Color: 
+						rgba: rgba('#0e1574c8')
+					Triangle:
+						points: [0, self.size[1],self.size[0],self.size[1],self.size[0],self.size[1]-(0.4*self.size[1])]
+				Widget:
+					size_hint_y: 0.25	
+				Label:
+					text: '%s'%icon('zmdi-account-circle')
+					font_size: mtx.sp('154')
+					markup: True
+					color: rgba('#0e1574ff')
+					size_hint_y: 0.3
+				BoxLayout:
+					size_hint_y: 0.45
+					orientation: 'vertical'
+					padding: [mtx.dp(20),0]
+					#Widget:
+					FlatInput:
+						id: si_username
+						hint_text: "username"
+						size_hint_y: 0.1
+					Widget:
+						size_hint_y: 0.1	
+					FlatInput:
+						id: si_password
+						hint_text: "password"
+						password: True
+						size_hint_y: 0.1 
+					Widget:
+						size_hint_y: 0.3
+					FlatButton:
+						text: "Sign In"
+						size_hint_y: 0.2
+						on_release:
+							root.auth_user(si_username,si_password)
+						canvas.before:
+							Color:
+								rgba: rgba('#0e1574ff')
+							RoundedRectangle:
+								pos: self.pos
+								size: self.size	
+								radius: [10]
+					FlatButton:
+						color: rgba('#0e1574ff')
+						text: "Don't have an account? Sign Up"
+						size_hint_y: 0.1
+						on_release:
+							scrn_mngr.current = 'scrn_signup'
+							scrn_mngr.transition.direction = "left"
+					Widget:
+						size_hint_y: 0.1
+
+
+
+
+
+
+		Screen:
+			name: 'scrn_signup'
+			BoxLayout:
+				orientation: 'vertical'
+				canvas.before:
+					Color:
+						rgba: rgba('#0e1574ff')
+					Rectangle:
+						pos: self.pos
+						size: self.size
+					Color: 
+						rgba: rgba('#ffffff')
+					Triangle:
+						points: [0, self.size[1],self.size[0],self.size[1],0,self.size[1]-(0.4*self.size[1])]
+					Color: 
+						rgba: rgba('#f2f2f2')
+					Triangle:
+						points: [0, self.size[1],self.size[0],self.size[1],self.size[0],self.size[1]-(0.4*self.size[1])]
+				Widget:
+					size_hint_y: 0.25	
+				Label:
+					text: '%s'%icon('zmdi-account-circle')
+					font_size: mtx.sp('154')
+					markup: True
+					color: rgba('#ffffff')
+					size_hint_y: 0.3
+				BoxLayout:
+					size_hint_y: 0.45
+					orientation: 'vertical'
+					padding: [mtx.dp(20),0]
+					#Widget:
+					WhiteInput:
+						id: su_username
+						hint_text: "username"
+						size_hint_y: 0.1
+					Widget:
+						size_hint_y: 0.1	
+					WhiteInput:
+						id: su_password
+						hint_text: "password"
+						password: True
+						size_hint_y: 0.1
+					Widget:
+						size_hint_y: 0.3
+					FlatButton:
+						text: "Sign Up"
+						size_hint_y: 0.2
+						color: rgba('#0e1574ff')
+						on_release: root.add_user(su_username,su_password)
+						canvas.before:
+							Color:
+								rgba: rgba('#ffffff')
+							RoundedRectangle:
+								pos: self.pos
+								size: self.size	
+								radius: [10]
+					FlatButton:
+						color: rgba('#ffffff')
+						text: "Already have an account? Sign In"
+						size_hint_y: 0.1
+						on_release:
+							scrn_mngr.current = 'scrn_signin'
+							scrn_mngr.transition.direction = "right"
+					Widget:
+						size_hint_y: 0.1
+
+
+
+
+
+
+		Screen:
+			name: 'scrn_main'
+			NavigationDrawer:
+				id: nav
+				anim_type: 'slide_above_simple'
+				side_panel_width: .7*self.width
+				BoxLayout:
+					id: sidenav
+					orientation: 'vertical'
+					padding: mtx.dp(10)
+					canvas.before:
+						Color:
+							rgba: rgba('#ffffff')
+						Rectangle:
+							pos: self.pos
+							size: self.size
+					ListEntry:
+						text: '%s Add New'%icon('zmdi-edit')
+						markup: True
+						color: rgba('#0e5174')
+						size_hint_y: .07
+						on_release:
+							nav.toggle_state() 
+							root.add_new()
+
+					Widget:				
+				BoxLayout:
+					orientation: 'vertical'
+					id: 'main_content'
+					canvas.before:
+						Color:
+							rgba: rgba('#0e1574ff')
+						Rectangle:
+							pos: self.pos
+							size: self.size
+					BoxLayout:
+						padding: mtx.dp(10)
+						size_hint_y: 0.1	
+						FlatButton:
+							text: icon('zmdi-apps')
+							markup: True
+							valign: 'middle'
+							text_size: self.size
+							font_size: mtx.sp('24')
+							on_release: nav.toggle_state()
+					BoxLayout:
+						orientation: 'vertical'
+						id: main_content
+						canvas.before:
+							Color:
+								rgba: rgba('#119cceff')
+							RoundedRectangle:
+								pos: self.pos
+								size: self.size
+								radius: [20,20,0,0]
+						BoxLayout:
+							size_hint_y: 0.4
+							orientation: 'vertical'
+							BoxLayout:
+								size_hint_y: 0.1
+								padding:[10,0]
+								FlatButton:
+									text: icon('zmdi-arrow-forward')
+									font_size: mtx.sp(24)
+									markup: True
+									text_size: self.size
+									size_hint_x: 0.8
+									on_release: scrn_mngr.current = "scrn_today"
+								Label:
+									text: 'TODAY'
+									bold: True
+									size_hint_x: 0.2
+									text_size: self.size
+									halign: 'right'
+							BoxLayout:
+								size_hint_y: 0.9
+								id: scroll_parent
+								ScrollView:
+									id: sv_today
+									do_scroll: [True,False]
+									scroll_type: ['content']
+									size_hint_y: None
+									height: self.parent.height
+									effect_cls: 'ScrollEffect'
+									GridLayout:
+										id: today_wrapper
+										rows: 1
+										padding: ["10dp","10dp","10dp","20dp"]
+										spacing: [mtx.dp(10)]
+										size:	self.minimum_size
+										size_hint: (None, 1)
+										NewButton:
+											name: 'Add New'
+											on_release: root.add_new()
+											size_hint: (None, None)
+											size:[scroll_parent.width/2.4,scroll_parent.height-(0.1*scroll_parent.height)]
+										
+						BoxLayout:
+							size_hint_y: 0.6
+							orientation: 'vertical'
+							spacing: mtx.dp(5)
+							canvas.before:
+								Color:
+									rgba: rgba('#ffffffff')
+								RoundedRectangle:
+									pos: self.pos
+									size: self.size
+									radius: [20,20,0,0]
+							BoxLayout:
+								size_hint_y: .1
+								padding: ['10dp','2dp']
+								Label:
+									text: icon('zmdi-arrow-forward')
+									font_size: mtx.sp(18)
+									color: rgba('#119cceff')
+									markup: True
+									size_hint_x: .7
+									text_size: self.size
+									valign: 'middle'
+								Label:
+									text: 'UPCOMING'
+									bold: True
+									size_hint_x: .3
+									color: rgba('#119cceff')
+									valign: 'middle'
+							BoxLayout:
+								size_hint_y: 0.9
+								id: upcoming_wrapper
+								ScrollView:
+									size_hint_y: None
+									height: self.parent.height
+									GridLayout:
+										id: upcoming
+										cols: 1
+										size_hint_y: None
+										size: self.minimum_size
+										padding: ['10dp']
+										spacing: ['10dp']
+												
+
+		Screen:
+			name: 'scrn_today'	
+			BoxLayout:
+				orientation: 'vertical'
+				BoxLayout:
+					size_hint_y: 0.07
+					padding: [mtx.dp(15),mtx.dp(5)]
+					FlatButton:
+						text: icon('zmdi-arrow-back')
+						markup: True
+						color: rgba('#0e1574ff')
+						font_size: mtx.dp(18)
+						text_size: self.size
+						valign: 'middle'
+						size_hint_x: .7
+						on_release: scrn_mngr.current = 'scrn_main'
+					Label:
+						text: 'TODAY'
+						size_hint_x: .3
+						text_size: self.size
+						halign: 'right'
+						valign: 'middle'
+						color: rgba('#0e5174')
+						bold: True
+				BoxLayout:
+					size_hint_y: 0.93
+					ScrollView:
+						size_hint_y: None
+						height: self.parent.height
+						GridLayout:
+							id: all_today
+							cols: 2
+							size_hint_y: None
+							size: self.minimum_size
+							padding: mtx.dp(10)
+							spacing: mtx.dp(10)
+
+<ListEntry@FlatButton>:
+	text_size: self.size
+	valign: 'middle'
+	canvas.before:
+		Color:
+			rgba: rgba('#dfdfdf')
+		Rectangle:
+			pos: self.pos
+			size: [self.size[0],mtx.dp(1)]
+
+<ViewTask>:
+	size_hint:[.8,.7]
+	BoxLayout:
+		orientation: 'vertical'
+		padding: mtx.dp(15)
+		canvas.before:
+			Color: 
+				rgba: [1,1,1,1]
+			RoundedRectangle:
+				pos: self.pos
+				size: self.size
+				radius: [mtx.dp(10)]
+		TextInput:
+			id: name
+			background_disabled_normal: ''
+			background_color: [0,0,0,0]
+			disabled_foreground_color: rgba('#0e5174')
+			disabled: True
+			size_hint_y: .7
+		BoxLayout:
+			size_hint_y: .3
+			orientation: 'vertical'
+			BoxLayout:
+				Label:
+					text: 'Date: '
+					bold: True
+					color: rgba('#0e5174')
+					size_hint_x: .4
+					text_size: self.size
+					valign: 'middle'
+				Label:
+					id: date
+					color: rgba('#0e5174')
+					size_hint_x: .6
+					text_size: self.size
+					valign: 'middle'
+			BoxLayout:
+				Label:
+					text: 'Time: '
+					bold: True
+					color: rgba('#0e5174')
+					size_hint_x: .4
+					text_size: self.size
+					valign: 'middle'
+				Label:
+					id: time
+					color: rgba('#0e5174')
+					size_hint_x: .6
+					text_size: self.size
+					valign: 'middle'		
+
+
+
+
+<NewTask>:
+	size_hint: [0.8,0.5]
+	BoxLayout:
+		orientation: 'vertical'
+		spacing: '12dp'
+		padding: '10dp'
+		canvas.before:
+			Color:
+				rgba: [1,1,1,1]
+			RoundedRectangle:
+				pos: self.pos
+				size: self.size
+				radius:	[5]
+		BoxLayout:
+			size_hint_y: 0.15
+			padding: '4dp'
+			FlatInput:
+				id: task_name
+				hint_text: 'Task name'
+				hint_text_color: rgba('#0e1574ff')
+		Widget:
+			size_hint_y: 0.16
+		BoxLayout:
+			id: datetime
+			size_hint_y: 0.15
+			padding: '4dp'
+			DatePicker:
+				id: task_date
+				size_hint_x: 0.7
+				background_active: ''
+				background_normal: ''
+				background_color: [1,1,1,0]
+				canvas.before:
+					Color:
+						rgba: rgba('#0e1574ff')
+					Rectangle:
+						pos: self.pos
+						size: [self.size[0],1]
+			FlatButton:
+				id: task_time
+				text: '00:00:00'
+				color: rgba('#0e1574')
+				size_hint_x: 0.3
+				on_release: root.get_time()
+		Widget:
+			size_hint_y: 0.3
+		BoxLayout:
+			id: submit_wrapper
+			size_hint_y: 0.24
+			FlatButton:
+				text: 'Submit'
+				on_release: app.root.add_task(root, (task_name,task_date,task_time))
+				canvas.before:
+					Color:
+						rgba: rgba('#0e1574ff')
+					RoundedRectangle:
+						pos: self.pos
+						size: self.size			
+
+<Upcoming>:
+	orientation: 'vertical'
+	padding: [mtx.dp(30), mtx.dp(10), mtx.dp(10),mtx.dp(8)]
+	canvas.before:
+		Color:
+			rgba: rgba('#0088aafd')
+		RoundedRectangle:
+			pos: self.pos
+			size: self.size
+			radius: [0,mtx.dp(25),0,0]
+		Color:
+			rgba: rgba('#aa0088ff')
+		Rectangle:
+			pos: self.pos
+			size: [self.size[0]-(.95*self.size[0]), self.size[1]]
+	Label:
+		text: root.name
+		bold: True
+		color: rgba('#000000')
+		text_size: self.size
+		shorten: True
+		shorten_from: 'right'
+		valign: 'middle'
+		size_hint_y: .3
+		font_size: mtx.sp(18)
+	Label:
+		text: root.time
+		color: rgba('#000000')
+		text_size: self.size
+		shorten: True
+		shorten_from: 'right'
+		valign: 'middle'
+		size_hint_y: .2
+		font_size: mtx.sp(14)
+	AnchorLayout:
+		anchor_x: 'right'
+		anchor_y: 'bottom'
+		size_hint_y: 0.5
+		BoxLayout:
+			size_hint_x: .4
+			FlatButton:
+				text:icon('zmdi-refresh')
+				font_size: '18sp'
+				size_hint_x: 0.2
+				markup: True
+				#color:rgba('#4a4a4a')		
+				on_release: app.root.get_update(root)	
+			FlatButton:
+				text:icon('zmdi-delete')
+				font_size: '18sp'
+				size_hint_x: 0.2
+				markup: True
+				#color:rgba('#4a4a4a')		
+				on_release: app.root.delete_task(root)		
+
+<Today>:
+	orientation: 'vertical'
+	padding: mtx.dp(15)
+	canvas.before:
+		Color:
+			rgba: rgba('#ff9955ff')
+		RoundedRectangle:
+			pos: self.pos
+			size: self.size
+			radius: [20]
+	Label:
+		id: task_name
+		text: root.name
+		bold: True
+		font_size: mtx.sp(18)
+		size_hint_y: 0.15
+		color: rgba('#4a4a4a')
+		text_size: self.size
+		shorten: True
+		shorten_from: 'right'
+		halign: 'right'
+	BoxLayout:
+		size_hint_y: 0.1
+		Label:
+			text:  icon('zmdi-time-countdown')
+			markup: True
+			size_hint_x: 0.35
+			halign: 'right'		
+			text_size: self.size
+			color: rgba('#4a4a4a')
+		Label:
+			id: task_time
+			text: root.time
+			size_hint_x: 0.65
+			font_size: mtx.sp(12)
+			color: rgba('#4a4a4a')
+			text_size: self.size
+			halign: 'right'
+
+	AnchorLayout:
+		anchor_x: 'right'
+		anchor_y: 'bottom'
+		size_hint_y: 0.75
+		BoxLayout:
+			size_hint_x: 0.4
+			FlatButton:
+				text:icon('zmdi-refresh')
+				font_size: '24sp'
+				markup: True
+				color:rgba('#000000')	
+				on_release: app.root.get_update(root)
+				halign: 'right'
+			FlatButton:
+				text:icon('zmdi-delete')
+				font_size: '24sp'
+				markup: True
+				color:rgba('#000000')	
+				on_release: app.root.delete_task(root)
+				halign: 'right'	
+
+<NewButton>:
+	canvas.before:
+		Color:
+			rgba: rgba('#ff9955c8')
+		RoundedRectangle:
+			pos: self.pos
+			size: self.size
+			radius: [20]	
+	Label:
+		text: icon('zmdi-plus')
+		font_size: mtx.sp(56)
+		markup: True
+
+<FlatButton@Button>:
+	background_normal: ''
+	background_color: [1,1,1,0]
+
+<FlatInput@TextInput>:
+	background_active: ''
+	background_normal: ''
+	background_color: [1,1,1,0]
+	canvas.before:
+		Color:
+			rgba: rgba('#0e1574ff')
+		Rectangle:
+			pos: self.pos
+			size: [self.size[0],1]
+
+<WhiteInput@TextInput>:
+	background_active: ''
+	background_normal: ''
+	background_color: [1,1,1,0]
+	canvas.before:
+		Color:
+			rgba: rgba('#ffffff')
+		Rectangle:
+			pos: self.pos
+			size: [self.size[0],1]
